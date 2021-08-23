@@ -25,7 +25,7 @@ const postSchema = new Schema({
   activeImage: {
     type: [String],
     default: [
-      '1628611868571.jpg'
+      'activeDefault.jpg'
     ],
     required: [true, '缺少揪團圖片']
   },
