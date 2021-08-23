@@ -30,7 +30,6 @@ export const checkout = async (req, res) => {
       await req.user.save({ validateBeforeSave: false })
     }
   } catch (error) {
-    console.log(error)
     res.status(500).send({ success: false, message: '伺服器錯誤' })
   }
 }
