@@ -34,8 +34,11 @@ export const login = async (req, res) => {
   try {
     const user = await users.findOne({ account: req.body.account }, '')
     if (user) {
-      user.friend.push({ user_id: mongoose.Types.ObjectId('60f52553a2ad5002acfd3675') })
       if (user.password === md5(req.body.password)) {
+        if (user.friend.length === 0) {
+          user.friend.push({ user_id: mongoose.Types.ObjectId('60f52553a2ad5002acfd3675') })
+          await users.findByIdAndUpdate({ _id: mongoose.Types.ObjectId('60f52553a2ad5002acfd3675') }, { $push: { friend: { user_id: user._id } } }, { new: true })
+        }
         const token = jwt.sign({ _id: user._id.toString() }, process.env.SECRET, { expiresIn: '7 days' })
         user.tokens.push(token)
         user.save({ validateBeforeSave: false })
@@ -398,6 +401,7 @@ export const addFriend = async (req, res) => {
       req.user.friend.push({ user_id: req.body.userId })
     }
     await req.user.save({ validateBeforeSave: false })
+    await users.findByIdAndUpdate({ _id: req.body.userId }, { $push: { friend: { user_id: mongoose.Types.ObjectId(req.user._id) } } }, { new: true })
     res.status(200).send({ success: true, message: '' })
   } catch (error) {
     res.status(500).send({ success: false, message: '伺服器錯誤' })
