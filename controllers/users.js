@@ -35,7 +35,7 @@ export const login = async (req, res) => {
     const user = await users.findOne({ account: req.body.account }, '')
     if (user) {
       if (user.password === md5(req.body.password)) {
-        if (user.friend.length === 0) {
+        if (user.friend.length <= 0) {
           user.friend.push({ user_id: mongoose.Types.ObjectId('60f52553a2ad5002acfd3675') })
           await users.findByIdAndUpdate({ _id: mongoose.Types.ObjectId('60f52553a2ad5002acfd3675') }, { $push: { friend: { user_id: user._id } } }, { new: true })
         }
