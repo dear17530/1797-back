@@ -3,14 +3,6 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const adminSchema = new Schema({
-  logo: {
-    type: String
-    // required: [true, '缺少logo']
-  },
-  banner: {
-    type: String
-    // required: [true, '缺少banner']
-  },
   targetSales: {
     type: [String],
     default: ['10000', '10000', '10000', '10000', '10000'],
