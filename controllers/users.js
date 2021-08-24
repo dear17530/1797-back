@@ -1,4 +1,5 @@
 import users from '../models/users.js'
+import messages from '../models/messages.js'
 import posts from '../models/posts.js'
 import products from '../models/products.js'
 import jwt from 'jsonwebtoken'
@@ -38,6 +39,13 @@ export const login = async (req, res) => {
         if (user.friend.length <= 0) {
           user.friend.push({ user_id: mongoose.Types.ObjectId('60f52553a2ad5002acfd3675') })
           await users.findByIdAndUpdate({ _id: mongoose.Types.ObjectId('60f52553a2ad5002acfd3675') }, { $push: { friend: { user_id: user._id } } }, { new: true })
+          await messages.create({
+            message: '預設',
+            welcomeMessage: true,
+            sender: mongoose.Types.ObjectId('60f52553a2ad5002acfd3675'),
+            receiver: mongoose.Types.ObjectId(user._id),
+            date: new Date()
+          })
         }
         const token = jwt.sign({ _id: user._id.toString() }, process.env.SECRET, { expiresIn: '7 days' })
         user.tokens.push(token)
