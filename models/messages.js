@@ -21,6 +21,11 @@ const messageSchema = new Schema({
   date: {
     type: Date,
     required: [true, '缺少訊息日期']
+  },
+  welcomeMessage: {
+    type: Boolean,
+    default: false,
+    required: [true, '是否為歡迎詞']
   }
 }, { versionKey: false })
 
