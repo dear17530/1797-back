@@ -4,15 +4,13 @@ import auth from '../middleware/auth.js'
 import {
   sendMessage,
   getMessage,
-  getProfile,
-  getAllMessage
+  getProfile
 } from '../controllers/messages.js'
 
 const router = express.Router()
 
 router.post('/', auth, sendMessage)
 router.get('/profile/:id', auth, getProfile)
-router.get('/allMessages/:id', auth, getAllMessage)
 router.get('/:id', auth, getMessage)
 
 export default router
